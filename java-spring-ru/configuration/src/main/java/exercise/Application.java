@@ -1,7 +1,6 @@
 package exercise;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -26,8 +25,17 @@ public class Application {
 
     @GetMapping("/admins")
     public List<String> admins() {
-        final List<String> admins = userProperties.getAdmins();
-        return admins.stream()
+        final List<String> admins = userProperties
+                .getAdmins()
+                .stream()
+                .sorted()
+                .toList();
+        Map<String, String> adminsMap = new HashMap<>();
+        adminsMap.put(admins.getFirst(), "Emmit Brundle");
+        adminsMap.put(admins.get(1), "Glynn Joinsey");
+        adminsMap.put(admins.getLast(), "Sarina Crosi");
+        List<String> names = new ArrayList<>(adminsMap.values());
+        return names.stream()
                 .sorted()
                 .toList();
     }

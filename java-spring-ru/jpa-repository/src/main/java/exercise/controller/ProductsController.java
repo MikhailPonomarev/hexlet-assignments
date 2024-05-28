@@ -26,23 +26,9 @@ public class ProductsController {
     @GetMapping
     public List<Product> index(
             @RequestParam(required = false, defaultValue = "0") int min,
-            @RequestParam(required = false, defaultValue = "0") int max
+            @RequestParam(required = false, defaultValue = "999999999") int max
     ) {
-        List<Product> products = new ArrayList<>();
-        Sort sortByPriceAsc = Sort.by(Sort.Order.asc("price"));
-        if (min == 0 && max == 0) {
-            products.addAll(productRepository.findAll(sortByPriceAsc));
-        }
-        if (min != 0 && max == 0) {
-            products.addAll(productRepository.findByPriceGreaterThanEqual(min, sortByPriceAsc));
-        }
-        if (min == 0 && max != 0) {
-            products.addAll(productRepository.findByPriceLessThanEqual(max, sortByPriceAsc));
-        }
-        if (min != 0 && max != 0) {
-            products.addAll(productRepository.findByPriceBetween(min, max, sortByPriceAsc));
-        }
-        return products;
+        return productRepository.findAllByPriceBetween(min, max, Sort.by(Sort.Order.asc("price")));
     }
     // END
 
